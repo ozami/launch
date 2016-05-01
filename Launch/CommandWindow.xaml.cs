@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Launch
 {
@@ -86,13 +87,22 @@ namespace Launch
 
         private void Launch(string command)
         {
-            if (command == "chrome")
+            var chars = new List<string>();
+            foreach (var c in command)
             {
-                System.Diagnostics.Process.Start("C:\\Users\\ozawa\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Mery.lnk");
-                return;
+                chars.Add(Regex.Escape(c.ToString()));
+            }
+            var pattern = string.Join(".*", chars);
+
+            var rx = new Regex(pattern, RegexOptions.IgnoreCase);
+            foreach (var shortcut in shortcuts)
+            {
+                if (rx.IsMatch(shortcut.name))
+                {
+                    System.Diagnostics.Process.Start(shortcut.path);
+                    return;
+                }
             }
         }
-
-        
     }
 }
