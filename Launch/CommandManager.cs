@@ -24,7 +24,7 @@ namespace Launch
             };
             foreach (var menu in menus)
             {
-                ListShortcuts(Environment.GetFolderPath(menu));
+                MakeCache(Environment.GetFolderPath(menu));
             }
         }
 
@@ -49,16 +49,16 @@ namespace Launch
             return found.ToArray();
         }
 
-        private void ListShortcuts(string path)
+        private void MakeCache(string dir)
         {
             try
             {
-                foreach (var item in Directory.EnumerateFileSystemEntries(path))
+                foreach (var item in Directory.EnumerateFileSystemEntries(dir))
                 {
                     var attr = File.GetAttributes(item);
                     if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                     {
-                        ListShortcuts(item);
+                        MakeCache(item);
                     }
                     else
                     {
