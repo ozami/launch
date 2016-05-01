@@ -18,23 +18,22 @@ namespace Launch
             var hotkey = new HotKeyRegister(MOD_KEY.CONTROL, System.Windows.Forms.Keys.Space, this);
             hotkey.HotKeyPressed += (sender) =>
             {
-                if (commandWindow == null)
+                if (commandWindow.IsVisible)
                 {
-                    commandWindow = new CommandWindow();
-                    commandWindow.Owner = this;
-                    commandWindow.Show();
-                    commandWindow.Activate();
+                    commandWindow.Hide();
                 }
                 else
                 {
-                    commandWindow.Close();
-                    commandWindow = null;
+                    commandWindow.Show();
+                    commandWindow.Activate();
                 }
             };
         }
 
         private void OnSourceInitialized(object sender, EventArgs e)
         {
+            commandWindow = new CommandWindow();
+            commandWindow.Owner = this;
             Hide();
         }
     }
