@@ -31,10 +31,14 @@ namespace Launch
         private void CacheStartMenuItems()
         {
             shortcuts = new List<StartMenuItem>();
-            var startMenuFolder = Environment.GetFolderPath(
+            Environment.SpecialFolder[] menus = {
+                Environment.SpecialFolder.StartMenu,
                 Environment.SpecialFolder.CommonStartMenu
-            );
-            ListShortcuts(startMenuFolder);
+            };
+            foreach (var menu in menus)
+            {
+                ListShortcuts(Environment.GetFolderPath(menu));
+            }
         }
 
         private void ListShortcuts(string path)
