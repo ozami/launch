@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="CommandWindow" Width="250" Topmost="True" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ScrollViewer.VerticalScrollBarVisibility="Disabled">
     <Grid>
-        <TextBox x:Name="commandInput" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" AllowDrop="False" FontSize="24"/>
+        <TextBox x:Name="commandInput" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" AllowDrop="False" FontSize="24" FontFamily="游ゴシック" FontWeight="Bold"/>
 
     </Grid>
 </Window>

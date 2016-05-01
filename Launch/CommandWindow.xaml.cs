@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Launch
@@ -11,8 +12,14 @@ namespace Launch
         public CommandWindow()
         {
             InitializeComponent();
-            commandInput.Focus();
+            Activated += CommandWindow_Activated;
             commandInput.KeyDown += CommandInput_KeyDown;
+        }
+
+        private void CommandWindow_Activated(object sender, EventArgs e)
+        {
+            commandInput.Text = "";
+            commandInput.Focus();
         }
 
         private void CommandInput_KeyDown(object sender, KeyEventArgs e)
@@ -25,7 +32,19 @@ namespace Launch
             if (e.Key == Key.Enter)
             {
                 Hide();
+                Launch(commandInput.Text);
             }
         }
+
+        private void Launch(string command)
+        {
+            if (command == "chrome")
+            {
+                System.Diagnostics.Process.Start("Chrome.exe");
+                return;
+            }
+        }
+
+        
     }
 }
