@@ -85,18 +85,18 @@ namespace Launch
             if (e.Key == Key.Enter)
             {
                 Hide();
-                var items = findCommand(commandInput.Text);
-                if (items.Length > 0)
+                var found = findShortcut(commandInput.Text);
+                if (found.Length > 0)
                 {
-                    Launch(items[0]);
+                    Launch(found[0]);
                 }
             }
         }
 
-        private Shortcut[] findCommand(string command)
+        private Shortcut[] findShortcut(string query)
         {
             var chars = new List<string>();
-            foreach (var c in command)
+            foreach (var c in query)
             {
                 chars.Add(Regex.Escape(c.ToString()));
             }
@@ -114,9 +114,9 @@ namespace Launch
             return found.ToArray();
         }
 
-        private void Launch(Shortcut item)
+        private void Launch(Shortcut shortcut)
         {
-            System.Diagnostics.Process.Start(item.path);
+            System.Diagnostics.Process.Start(shortcut.path);
         }
     }
 }
