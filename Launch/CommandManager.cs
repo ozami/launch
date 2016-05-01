@@ -11,11 +11,11 @@ namespace Launch
         public string path;
     }
 
-    class Commands
+    class CommandManager
     {
         private List<Command> commands;
 
-        public Commands()
+        public CommandManager()
         {
             commands = new List<Command>();
             Environment.SpecialFolder[] menus = {

@@ -10,12 +10,12 @@ namespace Launch
     /// </summary>
     public partial class CommandWindow : Window
     {
-        private Commands commands;
+        private CommandManager commandManger;
 
         public CommandWindow()
         {
             InitializeComponent();
-            commands = new Commands();
+            commandManger = new CommandManager();
             Activated += CommandWindow_Activated;
             commandInput.KeyDown += CommandInput_KeyDown;
         }
@@ -37,7 +37,7 @@ namespace Launch
             if (e.Key == Key.Enter)
             {
                 Hide();
-                var found = commands.find(commandInput.Text);
+                var found = commandManger.find(commandInput.Text);
                 if (found.Length > 0)
                 {
                     Launch(found[0]);
