@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Launch
 {
-    class Shortcut
+    class Command
     {
         public string name;
         public string path;
@@ -13,11 +13,11 @@ namespace Launch
 
     class Commands
     {
-        private List<Shortcut> shortcuts;
+        private List<Command> commands;
 
         public Commands()
         {
-            shortcuts = new List<Shortcut>();
+            commands = new List<Command>();
             Environment.SpecialFolder[] menus = {
                 Environment.SpecialFolder.StartMenu,
                 Environment.SpecialFolder.CommonStartMenu
@@ -28,7 +28,7 @@ namespace Launch
             }
         }
 
-        public Shortcut[] findShortcut(string query)
+        public Command[] find(string query)
         {
             var chars = new List<string>();
             foreach (var c in query)
@@ -38,8 +38,8 @@ namespace Launch
             var pattern = string.Join(".*", chars);
 
             var rx = new Regex(pattern, RegexOptions.IgnoreCase);
-            var found = new List<Shortcut>();
-            foreach (var shortcut in shortcuts)
+            var found = new List<Command>();
+            foreach (var shortcut in commands)
             {
                 if (rx.IsMatch(shortcut.name))
                 {
@@ -64,10 +64,10 @@ namespace Launch
                     {
                         if (Path.GetExtension(item) == ".lnk")
                         {
-                            var found = new Shortcut();
+                            var found = new Command();
                             found.name = Path.GetFileNameWithoutExtension(item);
                             found.path = item;
-                            shortcuts.Add(found);
+                            commands.Add(found);
                         }
                     }
                 }

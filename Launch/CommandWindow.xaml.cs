@@ -37,7 +37,7 @@ namespace Launch
             if (e.Key == Key.Enter)
             {
                 Hide();
-                var found = commands.findShortcut(commandInput.Text);
+                var found = commands.find(commandInput.Text);
                 if (found.Length > 0)
                 {
                     Launch(found[0]);
@@ -45,9 +45,9 @@ namespace Launch
             }
         }
 
-        private void Launch(Shortcut shortcut)
+        private void Launch(Command command)
         {
-            System.Diagnostics.Process.Start(shortcut.path);
+            System.Diagnostics.Process.Start(command.path);
         }
     }
 }
