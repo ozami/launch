@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HotKey;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Launch
 {
@@ -20,9 +9,33 @@ namespace Launch
     /// </summary>
     public partial class MainWindow : Window
     {
+        private CommandWindow commandWindow;
+
         public MainWindow()
         {
             InitializeComponent();
+            SourceInitialized += OnSourceInitialized;
+            var hotkey = new HotKeyRegister(MOD_KEY.CONTROL, System.Windows.Forms.Keys.Space, this);
+            hotkey.HotKeyPressed += (sender) =>
+            {
+                if (commandWindow == null)
+                {
+                    commandWindow = new CommandWindow();
+                    commandWindow.Owner = this;
+                    commandWindow.Show();
+                    commandWindow.Activate();
+                }
+                else
+                {
+                    commandWindow.Close();
+                    commandWindow = null;
+                }
+            };
+        }
+
+        private void OnSourceInitialized(object sender, EventArgs e)
+        {
+            Hide();
         }
     }
 }

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Launch"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Main Window" ShowInTaskbar="False" WindowStyle="ToolWindow" Focusable="False" IsHitTestVisible="False" IsTabStop="False" Width="100" Height="100" Left="-9999">
     <Grid>
-        
+
     </Grid>
 </Window>
