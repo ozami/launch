@@ -20,7 +20,6 @@ namespace Launch
             commandInput.KeyDown += CommandInput_KeyDown;
         }
 
-
         private void CommandWindow_Activated(object sender, EventArgs e)
         {
             commandInput.Text = "";
@@ -40,14 +39,10 @@ namespace Launch
                 var found = commandManger.find(commandInput.Text);
                 if (found.Length > 0)
                 {
-                    Launch(found[0]);
+                    commandManger.Launch(found[0]);
                 }
             }
         }
 
-        private void Launch(Command command)
-        {
-            System.Diagnostics.Process.Start(command.path);
-        }
     }
 }

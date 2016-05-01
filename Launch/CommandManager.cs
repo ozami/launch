@@ -49,6 +49,11 @@ namespace Launch
             return found.ToArray();
         }
 
+        public void Launch(Command command)
+        {
+            System.Diagnostics.Process.Start(command.path);
+        }
+
         private void MakeCache(string dir)
         {
             try
