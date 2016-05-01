@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Launch
 {
-    public class StartMenuItem
+    public class Shortcut
     {
         public string name;
         public string path;
@@ -18,19 +18,19 @@ namespace Launch
     /// </summary>
     public partial class CommandWindow : Window
     {
-        private List<StartMenuItem> shortcuts;
+        private List<Shortcut> shortcuts;
 
         public CommandWindow()
         {
             InitializeComponent();
-            CacheStartMenuItems();
+            CacheShortcuts();
             Activated += CommandWindow_Activated;
             commandInput.KeyDown += CommandInput_KeyDown;
         }
 
-        private void CacheStartMenuItems()
+        private void CacheShortcuts()
         {
-            shortcuts = new List<StartMenuItem>();
+            shortcuts = new List<Shortcut>();
             Environment.SpecialFolder[] menus = {
                 Environment.SpecialFolder.StartMenu,
                 Environment.SpecialFolder.CommonStartMenu
@@ -56,7 +56,7 @@ namespace Launch
                     {
                         if (Path.GetExtension(item) == ".lnk")
                         {
-                            var found = new StartMenuItem();
+                            var found = new Shortcut();
                             found.name = Path.GetFileNameWithoutExtension(item);
                             found.path = item;
                             shortcuts.Add(found);
@@ -93,7 +93,7 @@ namespace Launch
             }
         }
 
-        private StartMenuItem[] findCommand(string command)
+        private Shortcut[] findCommand(string command)
         {
             var chars = new List<string>();
             foreach (var c in command)
@@ -103,7 +103,7 @@ namespace Launch
             var pattern = string.Join(".*", chars);
 
             var rx = new Regex(pattern, RegexOptions.IgnoreCase);
-            var found = new List<StartMenuItem>();
+            var found = new List<Shortcut>();
             foreach (var shortcut in shortcuts)
             {
                 if (rx.IsMatch(shortcut.name))
@@ -114,7 +114,7 @@ namespace Launch
             return found.ToArray();
         }
 
-        private void Launch(StartMenuItem item)
+        private void Launch(Shortcut item)
         {
             System.Diagnostics.Process.Start(item.path);
         }
