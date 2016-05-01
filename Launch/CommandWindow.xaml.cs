@@ -85,11 +85,15 @@ namespace Launch
             if (e.Key == Key.Enter)
             {
                 Hide();
-                Launch(commandInput.Text);
+                var items = findCommand(commandInput.Text);
+                if (items.Length > 0)
+                {
+                    Launch(items[0]);
+                }
             }
         }
 
-        private void Launch(string command)
+        private StartMenuItem[] findCommand(string command)
         {
             var chars = new List<string>();
             foreach (var c in command)
@@ -99,14 +103,20 @@ namespace Launch
             var pattern = string.Join(".*", chars);
 
             var rx = new Regex(pattern, RegexOptions.IgnoreCase);
+            var found = new List<StartMenuItem>();
             foreach (var shortcut in shortcuts)
             {
                 if (rx.IsMatch(shortcut.name))
                 {
-                    System.Diagnostics.Process.Start(shortcut.path);
-                    return;
+                    found.Add(shortcut);
                 }
             }
+            return found.ToArray();
+        }
+
+        private void Launch(StartMenuItem item)
+        {
+            System.Diagnostics.Process.Start(item.path);
         }
     }
 }
