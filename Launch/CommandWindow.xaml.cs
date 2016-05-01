@@ -36,7 +36,7 @@ namespace Launch
             if (e.Key == Key.Enter)
             {
                 Hide();
-                var found = commandManger.find(commandInput.Text);
+                var found = commandManger.Find(commandInput.Text);
                 if (found.Length > 0)
                 {
                     commandManger.Launch(found[0]);

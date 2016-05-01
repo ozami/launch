@@ -28,7 +28,7 @@ namespace Launch
             }
         }
 
-        public Command[] find(string query)
+        public Command[] Find(string query)
         {
             var chars = new List<string>();
             foreach (var c in query)
