@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:Launch"
         xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         mc:Ignorable="d"
-        Title="CommandWindow" Width="250" Topmost="True" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" ScrollViewer.VerticalScrollBarVisibility="Disabled" SizeToContent="WidthAndHeight">
+        Title="CommandWindow" Width="300" Topmost="True" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" ScrollViewer.VerticalScrollBarVisibility="Disabled" SizeToContent="WidthAndHeight">
     <Grid>
-        <TextBox x:Name="commandInput" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" AllowDrop="False" FontSize="24" FontFamily="游ゴシック" FontWeight="Bold"/>
-        <ListBox x:Name="suggestList" HorizontalAlignment="Left" Height="120" Margin="0,40,0,0" VerticalAlignment="Top" Width="250">
+        <TextBox x:Name="commandInput" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" AllowDrop="False" FontSize="24" FontFamily="游ゴシック" FontWeight="Bold"/>
+        <ListBox x:Name="suggestList" HorizontalAlignment="Left" Height="200" Margin="0,40,0,0" VerticalAlignment="Top" Width="300" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}" Margin="0" Width="200" Height="25" FontFamily="游ゴシック" FontSize="16"></TextBlock>
+                    <TextBlock Text="{Binding Name}" Margin="0" Width="300" Height="25" FontFamily="游ゴシック" FontSize="16"></TextBlock>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
