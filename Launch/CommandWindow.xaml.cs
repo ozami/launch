@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -11,12 +11,17 @@ namespace Launch
     public partial class CommandWindow : Window
     {
         private CommandManager commandManger;
+        private ObservableCollection<Command> commands;
 
         public CommandWindow()
         {
             InitializeComponent();
             commandManger = new CommandManager();
+            commands = new ObservableCollection<Command>();
+            suggestList.ItemsSource = commands;
+
             Activated += CommandWindow_Activated;
+            commandInput.TextChanged += CommandInput_TextChanged;
             commandInput.KeyDown += CommandInput_KeyDown;
         }
 
@@ -24,6 +29,11 @@ namespace Launch
         {
             commandInput.Text = "";
             commandInput.Focus();
+        }
+
+        private void CommandInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            UpdateSuggest();
         }
 
         private void CommandInput_KeyDown(object sender, KeyEventArgs e)
@@ -41,8 +51,17 @@ namespace Launch
                 {
                     commandManger.Launch(found[0]);
                 }
+                return;
             }
         }
 
+        private void UpdateSuggest()
+        {
+            commands.Clear();
+            foreach (var command in commandManger.Find(commandInput.Text))
+            {
+                commands.Add(command);
+            }
+        }
     }
 }

@@ -7,8 +7,8 @@ namespace Launch
 {
     class Command
     {
-        public string name;
-        public string path;
+        public string Name { get; set; }
+        public string Path { get; set; }
     }
 
     class CommandManager
@@ -30,6 +30,10 @@ namespace Launch
 
         public Command[] Find(string query)
         {
+            if (query == "")
+            {
+                return new Command[] {};
+            }
             var chars = new List<string>();
             foreach (var c in query)
             {
@@ -41,7 +45,7 @@ namespace Launch
             var found = new List<Command>();
             foreach (var shortcut in commands)
             {
-                if (rx.IsMatch(shortcut.name))
+                if (rx.IsMatch(shortcut.Name))
                 {
                     found.Add(shortcut);
                 }
@@ -51,7 +55,7 @@ namespace Launch
 
         public void Launch(Command command)
         {
-            System.Diagnostics.Process.Start(command.path);
+            System.Diagnostics.Process.Start(command.Path);
         }
 
         private void MakeCache(string dir)
@@ -70,8 +74,8 @@ namespace Launch
                         if (Path.GetExtension(item) == ".lnk")
                         {
                             var found = new Command();
-                            found.name = Path.GetFileNameWithoutExtension(item);
-                            found.path = item;
+                            found.Name = Path.GetFileNameWithoutExtension(item);
+                            found.Path = item;
                             commands.Add(found);
                         }
                     }
