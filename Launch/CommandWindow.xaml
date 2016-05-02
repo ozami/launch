@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="CommandWindow" Width="300" Topmost="True" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" ScrollViewer.VerticalScrollBarVisibility="Disabled" SizeToContent="WidthAndHeight">
     <Grid>
-        <TextBox x:Name="commandInput" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" AllowDrop="False" FontSize="24" FontFamily="游ゴシック" FontWeight="Bold"/>
+        <TextBox x:Name="commandInput" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" AllowDrop="False" FontSize="24" FontFamily="游ゴシック" FontWeight="Bold" Padding="5,0"/>
         <ListBox x:Name="suggestList" HorizontalAlignment="Left" Height="200" Margin="0,40,0,0" VerticalAlignment="Top" Width="300" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
