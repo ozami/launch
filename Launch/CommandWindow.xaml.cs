@@ -10,18 +10,18 @@ namespace Launch
     /// </summary>
     public partial class CommandWindow : Window
     {
-        private CommandManager commandManger;
+        private CommandManager commandManager;
         private ObservableCollection<Command> commands;
 
         public CommandWindow()
         {
             InitializeComponent();
-            commandManger = new CommandManager();
+            commandManager = new CommandManager();
             commands = new ObservableCollection<Command>();
             suggestList.ItemsSource = commands;
             Activated += CommandWindow_Activated;
             commandInput.TextChanged += CommandInput_TextChanged;
-            commandInput.PreviewKeyDown += CommandInput_PreviewKeyDown; ;
+            commandInput.PreviewKeyDown += CommandInput_PreviewKeyDown;
         }
 
         private void CommandWindow_Activated(object sender, EventArgs e)
@@ -46,7 +46,7 @@ namespace Launch
             {
                 if (suggestList.SelectedIndex >= 0)
                 {
-                    commandManger.Launch(commands[suggestList.SelectedIndex]);
+                    commandManager.Launch(commands[suggestList.SelectedIndex]);
                     Hide();
                 }
                 return;
@@ -72,7 +72,7 @@ namespace Launch
         private void UpdateSuggest()
         {
             commands.Clear();
-            foreach (var command in commandManger.Find(commandInput.Text))
+            foreach (var command in commandManager.Find(commandInput.Text))
             {
                 commands.Add(command);
             }
