@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Launch
@@ -34,6 +35,26 @@ namespace Launch
             {
                 return new Command[] {};
             }
+            var found1 = FindWithSubstring(query);
+            var found2 = FindWithRegex(query);
+            return found1.Concat(found2).Distinct().ToArray();
+        }
+
+        private List<Command> FindWithSubstring(string query)
+        {
+            var found = new List<Command>();
+            foreach (var command in commands)
+            {
+                if (command.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    found.Add(command);
+                }
+            }
+            return found;
+        }
+
+        private List<Command> FindWithRegex(string query)
+        {
             var chars = new List<string>();
             foreach (var c in query)
             {
@@ -43,14 +64,14 @@ namespace Launch
 
             var rx = new Regex(pattern, RegexOptions.IgnoreCase);
             var found = new List<Command>();
-            foreach (var shortcut in commands)
+            foreach (var command in commands)
             {
-                if (rx.IsMatch(shortcut.Name))
+                if (rx.IsMatch(command.Name))
                 {
-                    found.Add(shortcut);
+                    found.Add(command);
                 }
             }
-            return found.ToArray();
+            return found;
         }
 
         public void Launch(Command command)
