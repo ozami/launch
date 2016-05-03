@@ -14,13 +14,13 @@ namespace Launch
 
     class CommandManager
     {
-        private List<Command> commands;
+        private List<Command> Commands;
         private List<Command> History;
         const int HistorySize = 10;
 
         public CommandManager()
         {
-            commands = new List<Command>();
+            Commands = new List<Command>();
             History = new List<Command>();
             Environment.SpecialFolder[] menus = {
                 Environment.SpecialFolder.StartMenu,
@@ -61,7 +61,7 @@ namespace Launch
         private List<Command> FindWithSubstring(string query)
         {
             var found = new List<Command>();
-            foreach (var command in commands)
+            foreach (var command in Commands)
             {
                 if (command.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
@@ -82,7 +82,7 @@ namespace Launch
 
             var rx = new Regex(pattern, RegexOptions.IgnoreCase);
             var found = new List<Command>();
-            foreach (var command in commands)
+            foreach (var command in Commands)
             {
                 if (rx.IsMatch(command.Name))
                 {
@@ -121,7 +121,7 @@ namespace Launch
                             var found = new Command();
                             found.Name = Path.GetFileNameWithoutExtension(item);
                             found.Path = item;
-                            commands.Add(found);
+                            Commands.Add(found);
                         }
                     }
                 }
