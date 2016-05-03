@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Media.Imaging;
 
 namespace Launch
 {
@@ -10,6 +12,7 @@ namespace Launch
     {
         public string Name { get; set; }
         public string Path { get; set; }
+        public BitmapSource Icon { get; set; }
     }
 
     class CommandManager
@@ -132,9 +135,15 @@ namespace Launch
                     {
                         if (Path.GetExtension(item) == ".lnk")
                         {
+                            var icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
+                                Icon.ExtractAssociatedIcon(item).Handle,
+                                System.Windows.Int32Rect.Empty,
+                                BitmapSizeOptions.FromEmptyOptions()
+                            );
                             var found = new Command {
                                 Name = Path.GetFileNameWithoutExtension(item),
-                                Path = item
+                                Path = item,
+                                Icon = icon
                             };
                             Commands.Add(found);
                         }
