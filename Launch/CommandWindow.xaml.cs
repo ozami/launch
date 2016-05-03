@@ -20,6 +20,7 @@ namespace Launch
             commands = new ObservableCollection<Command>();
             suggestList.ItemsSource = commands;
             Activated += CommandWindow_Activated;
+            Deactivated += CommandWindow_Deactivated;
             commandInput.TextChanged += CommandInput_TextChanged;
             commandInput.PreviewKeyDown += CommandInput_PreviewKeyDown;
         }
@@ -28,6 +29,11 @@ namespace Launch
         {
             commandInput.Text = "";
             commandInput.Focus();
+        }
+
+        private void CommandWindow_Deactivated(object sender, EventArgs e)
+        {
+            Hide();
         }
 
         private void CommandInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
