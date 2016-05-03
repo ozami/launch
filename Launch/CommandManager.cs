@@ -38,10 +38,11 @@ namespace Launch
             {
                 return new Command[] {};
             }
-            var found0 = FindHistory(query);
-            var found1 = FindWithSubstring(query);
-            var found2 = FindWithRegex(query);
-            return found0.Concat(found1).Concat(found2).Distinct().ToArray();
+            var found = FindHistory(query);
+            found.AddRange(FindBegining(query));
+            found.AddRange(FindWithSubstring(query));
+            found.AddRange(FindWithRegex(query));
+            return found.Distinct().ToArray();
         }
 
         private List<Command> FindHistory(string query)
@@ -51,6 +52,19 @@ namespace Launch
             {
                 var command = History[i];
                 if (command.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    found.Add(command);
+                }
+            }
+            return found;
+        }
+
+        private List<Command> FindBegining(string query)
+        {
+            var found = new List<Command>();
+            foreach (var command in Commands)
+            {
+                if (command.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     found.Add(command);
                 }
