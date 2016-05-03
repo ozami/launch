@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
+using Wsh = IWshRuntimeLibrary;
 
 namespace Launch
 {
@@ -135,17 +136,20 @@ namespace Launch
                     {
                         if (Path.GetExtension(item) == ".lnk")
                         {
-                            var icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
-                                Icon.ExtractAssociatedIcon(item).Handle,
-                                System.Windows.Int32Rect.Empty,
-                                BitmapSizeOptions.FromEmptyOptions()
-                            );
-                            var found = new Command {
-                                Name = Path.GetFileNameWithoutExtension(item),
-                                Path = item,
-                                Icon = icon
-                            };
-                            Commands.Add(found);
+                            try
+                            {
+                                var found = new Command
+                                {
+                                    Name = Path.GetFileNameWithoutExtension(item),
+                                    Path = item,
+                                    Icon = GetIcon(item)
+                                };
+                                Commands.Add(found);
+                            }
+                            catch (FileNotFoundException)
+                            {
+
+                            }
                         }
                     }
                 }
@@ -153,6 +157,35 @@ namespace Launch
             catch (System.UnauthorizedAccessException)
             {
             }
+        }
+
+        private static BitmapSource GetIcon(string path)
+        {
+            var shell = new Wsh.IWshShell_Class();
+            var shortcut = (Wsh.IWshShortcut_Class)shell.CreateShortcut(path);
+            var exePath = shortcut.IconLocation;
+            var iconIndex = 0;
+            var pos = exePath.LastIndexOf(",");
+            if (pos != -1)
+            {
+                iconIndex = int.Parse(exePath.Substring(pos + 1));
+                exePath = exePath.Substring(0, pos);
+            }
+            Icon icon;
+            try
+            {
+                icon = IconUtility.GetExeIcon(exePath, iconIndex);
+            }
+            catch (Exception)
+            {
+                icon = Icon.ExtractAssociatedIcon(path);
+            }
+            var iconSrc = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
+                icon.Handle,
+                System.Windows.Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions()
+            );
+            return iconSrc;
         }
     }
 }
