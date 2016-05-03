@@ -118,9 +118,10 @@ namespace Launch
                     {
                         if (Path.GetExtension(item) == ".lnk")
                         {
-                            var found = new Command();
-                            found.Name = Path.GetFileNameWithoutExtension(item);
-                            found.Path = item;
+                            var found = new Command {
+                                Name = Path.GetFileNameWithoutExtension(item),
+                                Path = item
+                            };
                             Commands.Add(found);
                         }
                     }
