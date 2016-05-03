@@ -19,10 +19,9 @@ namespace Launch
             commandManger = new CommandManager();
             commands = new ObservableCollection<Command>();
             suggestList.ItemsSource = commands;
-
             Activated += CommandWindow_Activated;
             commandInput.TextChanged += CommandInput_TextChanged;
-            commandInput.KeyDown += CommandInput_KeyDown;
+            commandInput.PreviewKeyDown += CommandInput_PreviewKeyDown; ;
         }
 
         private void CommandWindow_Activated(object sender, EventArgs e)
@@ -36,7 +35,7 @@ namespace Launch
             UpdateSuggest();
         }
 
-        private void CommandInput_KeyDown(object sender, KeyEventArgs e)
+        private void CommandInput_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
@@ -45,11 +44,26 @@ namespace Launch
             }
             if (e.Key == Key.Enter)
             {
-                Hide();
-                var found = commandManger.Find(commandInput.Text);
-                if (found.Length > 0)
+                if (suggestList.SelectedIndex >= 0)
                 {
-                    commandManger.Launch(found[0]);
+                    commandManger.Launch(commands[suggestList.SelectedIndex]);
+                    Hide();
+                }
+                return;
+            }
+            if (e.Key == Key.Down)
+            {
+                if (commands.Count > 0)
+                {
+                    suggestList.SelectedIndex = (suggestList.SelectedIndex + 1) % commands.Count;
+                }
+                return;
+            }
+            if (e.Key == Key.Up)
+            {
+                if (commands.Count > 0)
+                {
+                    suggestList.SelectedIndex = (suggestList.SelectedIndex - 1 + commands.Count) % commands.Count;
                 }
                 return;
             }
@@ -61,6 +75,10 @@ namespace Launch
             foreach (var command in commandManger.Find(commandInput.Text))
             {
                 commands.Add(command);
+            }
+            if (commands.Count > 0)
+            {
+                suggestList.SelectedIndex = 0;
             }
         }
     }
