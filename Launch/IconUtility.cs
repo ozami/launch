@@ -51,10 +51,10 @@ namespace Launch
             SHGetFileInfoFlags uFlags
         );
 
-        [DllImport("comctl32.dll", SetLastError = true)]
+        [DllImport("comctl32.dll")]
         private static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, int flags);
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [DllImport("user32.dll")]
         private static extern bool DestroyIcon(IntPtr handle);
     }
 }
