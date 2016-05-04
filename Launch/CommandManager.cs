@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Media.Imaging;
 
 namespace Launch
 {
@@ -10,6 +11,7 @@ namespace Launch
     {
         public string Name { get; set; }
         public string Path { get; set; }
+        public BitmapSource Icon { get; set; }
     }
 
     class CommandManager
@@ -134,7 +136,8 @@ namespace Launch
                         {
                             var found = new Command {
                                 Name = Path.GetFileNameWithoutExtension(item),
-                                Path = item
+                                Path = item,
+                                Icon = IconUtility.GetFileIcon(item)
                             };
                             Commands.Add(found);
                         }
