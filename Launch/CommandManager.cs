@@ -134,15 +134,10 @@ namespace Launch
                     {
                         if (Path.GetExtension(item) == ".lnk")
                         {
-                            var icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
-                                IconUtility.GetFileIcon(item).Handle,
-                                System.Windows.Int32Rect.Empty,
-                                BitmapSizeOptions.FromEmptyOptions()
-                            );
                             var found = new Command {
                                 Name = Path.GetFileNameWithoutExtension(item),
                                 Path = item,
-                                Icon = icon
+                                Icon = IconUtility.GetFileIcon(item)
                             };
                             Commands.Add(found);
                         }
