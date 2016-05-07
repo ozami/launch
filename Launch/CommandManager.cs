@@ -51,7 +51,7 @@ namespace Launch
         private List<Command> FindHistory(string query)
         {
             var found = new List<Command>();
-            for (var i = 0; i < History.Count; ++i)
+            for (var i = History.Count - 1; i >= 0; --i)
             {
                 var command = History[i];
                 if (command.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
