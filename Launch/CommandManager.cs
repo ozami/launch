@@ -132,7 +132,8 @@ namespace Launch
                     }
                     else
                     {
-                        if (Path.GetExtension(item) == ".lnk")
+                        var ext = Path.GetExtension(item);
+                        if (ext == ".lnk" || ext == ".url")
                         {
                             var found = new Command {
                                 Name = Path.GetFileNameWithoutExtension(item),
