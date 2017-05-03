@@ -23,6 +23,10 @@ namespace Launch
         public CommandManager()
         {
             Commands = new List<Command>();
+            Commands.Add(new Command {
+                Name = "Quit",
+                Path = ":quit"
+            });
             History = new List<Command>();
             Environment.SpecialFolder[] menus = {
                 Environment.SpecialFolder.StartMenu,
@@ -115,6 +119,11 @@ namespace Launch
             if (History.Count > HistorySize)
             {
                 History = History.GetRange(1, HistorySize);
+            }
+            if (command.Path == ":quit")
+            {
+                System.Windows.Application.Current.Shutdown();
+                return;
             }
             System.Diagnostics.Process.Start(command.Path);
         }
