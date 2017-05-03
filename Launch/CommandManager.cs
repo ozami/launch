@@ -18,16 +18,32 @@ namespace Launch
     {
         private List<Command> Commands;
         private List<Command> History;
+        private Command QuitCommand;
+        private Command ReloadCommand;
         const int HistorySize = 10;
 
         public CommandManager()
         {
-            Commands = new List<Command>();
-            Commands.Add(new Command {
+            History = new List<Command>();
+            QuitCommand = new Command
+            {
                 Name = "Quit",
                 Path = ":quit"
-            });
-            History = new List<Command>();
+            };
+            ReloadCommand = new Command
+            {
+                Name = "Reload",
+                Path = ":reload"
+            };
+            Reload();
+        }
+
+        public void Reload()
+        {
+            Commands = new List<Command>();
+            Commands.Add(QuitCommand);
+            Commands.Add(ReloadCommand);
+
             Environment.SpecialFolder[] menus = {
                 Environment.SpecialFolder.StartMenu,
                 Environment.SpecialFolder.CommonStartMenu
@@ -123,6 +139,11 @@ namespace Launch
             if (command.Path == ":quit")
             {
                 System.Windows.Application.Current.Shutdown();
+                return;
+            }
+            if (command.Path == ":reload")
+            {
+                Reload();
                 return;
             }
             System.Diagnostics.Process.Start(command.Path);
