@@ -26,6 +26,7 @@ namespace Launch
                 {
                     commandWindow.Show();
                     commandWindow.Activate();
+                    commandWindow.Focus();
                 }
             };
         }
