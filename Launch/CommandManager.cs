@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
-using Newtonsoft.Json;
 
 namespace Launch
 {
@@ -103,7 +102,7 @@ namespace Launch
         {
             get
             {
-                return Path.Combine(AppDataFolderPath, "History.json");
+                return Path.Combine(AppDataFolderPath, "History.txt");
             }
         }
 
@@ -115,26 +114,30 @@ namespace Launch
         public void SaveHistory()
         {
             var paths = History.Select(command => command.Path);
-            var json = JsonConvert.SerializeObject(paths);
-            File.WriteAllText(HistoryFilePath, json);
+            var text = String.Join("\r\n", paths);
+            File.WriteAllText(HistoryFilePath, text);
         }
 
         public void LoadHistory()
         {
             History.Clear();
-            var json = File.ReadAllText(HistoryFilePath);
-            var paths = JsonConvert.DeserializeObject<string[]>(json);
-            foreach (var path in paths)
+            try
             {
-                foreach (var command in Commands)
+                var text = File.ReadAllText(HistoryFilePath);
+                var paths = text.Split(new[] { "\r\n" }, StringSplitOptions.None);
+                foreach (var path in paths)
                 {
-                    if (command.Path == path)
+                    foreach (var command in Commands)
                     {
-                        History.Add(command);
-                        break;
+                        if (command.Path == path)
+                        {
+                            History.Add(command);
+                            break;
+                        }
                     }
                 }
             }
+            catch { }
         }
 
         public Command[] Find(string query)
