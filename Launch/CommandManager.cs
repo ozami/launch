@@ -20,6 +20,7 @@ namespace Launch
         private List<Command> History;
         private Command QuitCommand;
         private Command ReloadCommand;
+        private Command OpenShortcutsFolderCommand;
         const int HistorySize = 10;
 
         public CommandManager()
@@ -35,6 +36,11 @@ namespace Launch
                 Name = "Reload",
                 Path = ":reload"
             };
+            OpenShortcutsFolderCommand = new Command
+            {
+                Name = "Open the shortcuts folder",
+                Path = ""
+            };
             Reload();
         }
 
@@ -43,15 +49,37 @@ namespace Launch
             Commands = new List<Command>();
             Commands.Add(QuitCommand);
             Commands.Add(ReloadCommand);
+            Commands.Add(OpenShortcutsFolderCommand);
+            var path = GetShortcutsFolderPath();
 
-            Environment.SpecialFolder[] menus = {
-                Environment.SpecialFolder.StartMenu,
-                Environment.SpecialFolder.CommonStartMenu
+            string[] menus = {
+                GetShortcutsFolderPath(),
+                Environment.GetFolderPath(Environment.SpecialFolder.StartMenu),
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu)
             };
             foreach (var menu in menus)
             {
-                MakeCache(Environment.GetFolderPath(menu));
+                MakeCache(menu);
             }
+        }
+
+        public string GetShortcutsFolderPath()
+        {
+            var path = Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData,
+                Environment.SpecialFolderOption.Create
+            );
+            path = Path.Combine(path, "Coroq", "Launch", "Shortcuts");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            return path;
+        }
+
+        public void OpenShortcutsFolder()
+        {
+            System.Diagnostics.Process.Start(GetShortcutsFolderPath());
         }
 
         public Command[] Find(string query)
@@ -144,6 +172,11 @@ namespace Launch
             if (command.Path == ":reload")
             {
                 Reload();
+                return;
+            }
+            if (command == OpenShortcutsFolderCommand)
+            {
+                OpenShortcutsFolder();
                 return;
             }
             System.Diagnostics.Process.Start(command.Path);
