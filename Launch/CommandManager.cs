@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
+using Newtonsoft.Json;
 
 namespace Launch
 {
@@ -25,6 +26,7 @@ namespace Launch
 
         public CommandManager()
         {
+            Commands = new List<Command>();
             History = new List<Command>();
             QuitCommand = new Command
             {
@@ -39,21 +41,25 @@ namespace Launch
             OpenShortcutsFolderCommand = new Command
             {
                 Name = "Open the shortcuts folder",
-                Path = ""
+                Path = ":open-shortcuts-folder"
             };
-            Reload();
+            LoadCommands();
+            LoadHistory();
         }
 
-        public void Reload()
+        ~CommandManager()
         {
-            Commands = new List<Command>();
+            SaveHistory();
+        }
+
+        public void LoadCommands()
+        {
+            Commands.Clear();
             Commands.Add(QuitCommand);
             Commands.Add(ReloadCommand);
             Commands.Add(OpenShortcutsFolderCommand);
-            var path = GetShortcutsFolderPath();
-
             string[] menus = {
-                GetShortcutsFolderPath(),
+                ShortcutsFolderPath,
                 Environment.GetFolderPath(Environment.SpecialFolder.StartMenu),
                 Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu)
             };
@@ -63,23 +69,72 @@ namespace Launch
             }
         }
 
-        public string GetShortcutsFolderPath()
+        public string AppDataFolderPath
         {
-            var path = Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData,
-                Environment.SpecialFolderOption.Create
-            );
-            path = Path.Combine(path, "Coroq", "Launch", "Shortcuts");
-            if (!Directory.Exists(path))
+            get
             {
-                Directory.CreateDirectory(path);
+                var path = Environment.GetFolderPath(
+                    Environment.SpecialFolder.LocalApplicationData,
+                    Environment.SpecialFolderOption.Create
+                );
+                path = Path.Combine(path, "Coroq", "Launch");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                return path;
             }
-            return path;
+        }
+
+        public string ShortcutsFolderPath
+        {
+            get
+            {
+                var path = Path.Combine(AppDataFolderPath, "Shortcuts");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                return path;
+            }
+        }
+
+        public string HistoryFilePath
+        {
+            get
+            {
+                return Path.Combine(AppDataFolderPath, "History.json");
+            }
         }
 
         public void OpenShortcutsFolder()
         {
-            System.Diagnostics.Process.Start(GetShortcutsFolderPath());
+            System.Diagnostics.Process.Start(ShortcutsFolderPath);
+        }
+
+        public void SaveHistory()
+        {
+            var paths = History.Select(command => command.Path);
+            var json = JsonConvert.SerializeObject(paths);
+            File.WriteAllText(HistoryFilePath, json);
+        }
+
+        public void LoadHistory()
+        {
+            History.Clear();
+            var json = File.ReadAllText(HistoryFilePath);
+            var paths = JsonConvert.DeserializeObject<string[]>(json);
+            foreach (var path in paths)
+            {
+                foreach (var command in Commands)
+                {
+                    if (command.Path == path)
+                    {
+                        History.Add(command);
+                        break;
+                    }
+                }
+            }
         }
 
         public Command[] Find(string query)
@@ -171,7 +226,9 @@ namespace Launch
             }
             if (command.Path == ":reload")
             {
-                Reload();
+                SaveHistory();
+                LoadCommands();
+                LoadHistory();
                 return;
             }
             if (command == OpenShortcutsFolderCommand)
