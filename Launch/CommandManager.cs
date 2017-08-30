@@ -239,7 +239,14 @@ namespace Launch
                 OpenShortcutsFolder();
                 return;
             }
-            System.Diagnostics.Process.Start(command.Path);
+            try
+            {
+                System.Diagnostics.Process.Start(command.Path);
+            }
+            catch
+            {
+                // do nothing
+            }
         }
 
         private void MakeCache(string dir)
