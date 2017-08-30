@@ -57,15 +57,7 @@ namespace Launch
             Commands.Add(QuitCommand);
             Commands.Add(ReloadCommand);
             Commands.Add(OpenShortcutsFolderCommand);
-            string[] menus = {
-                ShortcutsFolderPath,
-                Environment.GetFolderPath(Environment.SpecialFolder.StartMenu),
-                Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu)
-            };
-            foreach (var menu in menus)
-            {
-                MakeCache(menu);
-            }
+            MakeCache(ShortcutsFolderPath);
         }
 
         public string AppDataFolderPath
