@@ -23,6 +23,17 @@ namespace Launch
             Deactivated += CommandWindow_Deactivated;
             commandInput.TextChanged += CommandInput_TextChanged;
             commandInput.PreviewKeyDown += CommandInput_PreviewKeyDown;
+            suggestList.MouseLeftButtonUp += SuggestList_MouseLeftButtonUp;
+        }
+
+        private void SuggestList_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (suggestList.SelectedIndex < 0)
+            {
+                return;
+            }
+            commandManager.Launch(commands[suggestList.SelectedIndex]);
+            Hide();
         }
 
         private void CommandWindow_Activated(object sender, EventArgs e)
