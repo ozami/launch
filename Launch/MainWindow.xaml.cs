@@ -15,7 +15,7 @@ namespace Launch
         {
             InitializeComponent();
             SourceInitialized += OnSourceInitialized;
-            var hotkey = new HotKeyRegister(MOD_KEY.CONTROL, System.Windows.Forms.Keys.Space, this);
+            var hotkey = new HotKeyRegister(MOD_KEY.ALT, System.Windows.Forms.Keys.Space, this);
             hotkey.HotKeyPressed += (sender) =>
             {
                 if (commandWindow.IsVisible)
