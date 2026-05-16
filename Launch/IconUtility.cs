@@ -10,14 +10,15 @@ namespace Launch
         public static BitmapSource GetFileIcon(string path)
         {
             var info = new SHFILEINFO();
-            var imageList = SHGetFileInfo(
+            SHGetFileInfo(
                 path,
                 0,
                 ref info,
                 (uint)Marshal.SizeOf(info),
                 SHGetFileInfoFlags.SysIconIndex
             );
-            if (imageList == IntPtr.Zero)
+            var iid = IID_IImageList;
+            if (SHGetImageList(SHIL_EXTRALARGE, ref iid, out IntPtr imageList) != 0 || imageList == IntPtr.Zero)
             {
                 throw new Exception();
             }
@@ -46,6 +47,9 @@ namespace Launch
             SysIconIndex = 0x4000
         };
 
+        private const int SHIL_EXTRALARGE = 2;
+        private static readonly Guid IID_IImageList = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950");
+
         private struct SHFILEINFO
         {
             public IntPtr hIcon;
@@ -68,6 +72,9 @@ namespace Launch
 
         [DllImport("comctl32.dll")]
         private static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, int flags);
+
+        [DllImport("shell32.dll")]
+        private static extern int SHGetImageList(int iImageList, ref Guid riid, out IntPtr ppv);
 
         [DllImport("shell32.dll")]
         private static extern IntPtr DuplicateIcon(IntPtr hInst, IntPtr hIcon);
