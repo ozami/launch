@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace Launch
 {
@@ -24,7 +26,21 @@ namespace Launch
             commandInput.TextChanged += CommandInput_TextChanged;
             commandInput.PreviewKeyDown += CommandInput_PreviewKeyDown;
             suggestList.MouseLeftButtonUp += SuggestList_MouseLeftButtonUp;
+            SourceInitialized += CommandWindow_SourceInitialized;
         }
+
+        private void CommandWindow_SourceInitialized(object sender, EventArgs e)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            int preference = DWMWCP_ROUNDSMALL;
+            DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref preference, sizeof(int));
+        }
+
+        private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
+        private const int DWMWCP_ROUNDSMALL = 3;
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int pvAttribute, int cbAttribute);
 
         private void SuggestList_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -93,6 +109,7 @@ namespace Launch
             {
                 commands.Add(command);
             }
+            suggestList.Visibility = commands.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
             if (commands.Count > 0)
             {
                 suggestList.SelectedIndex = 0;

@@ -7,19 +7,26 @@
         xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="CommandWindow" Width="300" Topmost="True" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" ScrollViewer.VerticalScrollBarVisibility="Disabled" SizeToContent="WidthAndHeight">
-    <Grid>
-        <TextBox x:Name="commandInput" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" AllowDrop="False" FontSize="24" FontFamily="游ゴシック" FontWeight="Bold" Padding="5,0"/>
-        <ListBox x:Name="suggestList" HorizontalAlignment="Left" Height="200" Margin="0,40,0,0" VerticalAlignment="Top" Width="300" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <Border HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" CornerRadius="3" BorderBrush="#CCCCCC" BorderThickness="1" Background="White">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Width="300" Height="26" Orientation="Horizontal">
-                        <Image Width="22" Height="22" Source="{Binding Icon}" Margin="2" />
-                        <TextBlock Text="{Binding Name}" Margin="4,0,0,0" Width="270" Height="26" FontFamily="游ゴシック" FontSize="16"></TextBlock>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
-    </Grid>
+    <Border Padding="8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="69*"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="52*"/>
+            </Grid.RowDefinitions>
+            <Border HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" CornerRadius="3" BorderBrush="#ECECEC" BorderThickness="1" Background="#EEEEEE">
+                <TextBox x:Name="commandInput" TextWrapping="Wrap" AllowDrop="False" FontSize="24" FontFamily="游ゴシック" FontWeight="Bold" Padding="5,0" BorderThickness="0" Background="Transparent"/>
+            </Border>
+            <ListBox x:Name="suggestList" HorizontalAlignment="Left" MaxHeight="200" Margin="0,48,0,0" VerticalAlignment="Top" Width="300" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0" Background="Transparent" Grid.RowSpan="3" Visibility="Collapsed">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Width="300" Height="26" Orientation="Horizontal">
+                            <Image Width="22" Height="22" Source="{Binding Icon}" Margin="2" />
+                            <TextBlock Text="{Binding Name}" Margin="4,0,0,0" Width="270" Height="26" FontFamily="游ゴシック" FontSize="16"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Border>
 </Window>
