@@ -261,10 +261,20 @@ namespace Launch
                         var ext = Path.GetExtension(item);
                         if (ext == ".lnk" || ext == ".url")
                         {
+                            var pngPath = Path.ChangeExtension(item, ".png");
+                            BitmapSource icon;
+                            if (File.Exists(pngPath))
+                            {
+                                icon = IconUtility.LoadImage(pngPath);
+                            }
+                            else
+                            {
+                                icon = IconUtility.GetFileIcon(item);
+                            }
                             var found = new Command {
                                 Name = Path.GetFileNameWithoutExtension(item),
                                 Path = item,
-                                Icon = IconUtility.GetFileIcon(item)
+                                Icon = icon
                             };
                             Commands.Add(found);
                         }

@@ -44,6 +44,17 @@ namespace Launch
             return icon;
         }
 
+        public static BitmapSource LoadImage(string path)
+        {
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(path);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            bitmap.Freeze();
+            return bitmap;
+        }
+
         public static BitmapSource RenderGlyph(string text)
         {
             const int size = 48;
