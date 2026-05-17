@@ -27,20 +27,24 @@ namespace Launch
         {
             Commands = new List<Command>();
             History = new List<Command>();
+            var promptIcon = IconUtility.RenderGlyph("›");
             QuitCommand = new Command
             {
                 Name = "Quit",
-                Path = ":quit"
+                Path = ":quit",
+                Icon = promptIcon
             };
             ReloadCommand = new Command
             {
                 Name = "Reload",
-                Path = ":reload"
+                Path = ":reload",
+                Icon = promptIcon
             };
             OpenShortcutsFolderCommand = new Command
             {
                 Name = "Open the shortcuts folder",
-                Path = ":open-shortcuts-folder"
+                Path = ":open-shortcuts-folder",
+                Icon = promptIcon
             };
             LoadCommands();
             LoadHistory();

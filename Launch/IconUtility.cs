@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Drawing;
+using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Launch
@@ -40,6 +42,35 @@ namespace Launch
             );
             DestroyIcon(iconHandle);
             return icon;
+        }
+
+        public static BitmapSource RenderGlyph(string text)
+        {
+            const int size = 48;
+            var typeface = new Typeface(
+                new FontFamily("Consolas"),
+                FontStyles.Normal,
+                FontWeights.Bold,
+                FontStretches.Normal);
+            var formatted = new FormattedText(
+                text,
+                CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
+                typeface,
+                size,
+                Brushes.DimGray,
+                1.0);
+            var visual = new DrawingVisual();
+            using (var ctx = visual.RenderOpen())
+            {
+                ctx.DrawText(formatted, new Point(
+                    (size - formatted.WidthIncludingTrailingWhitespace) / 2.0,
+                    (size - formatted.Height) / 2.0));
+            }
+            var bitmap = new RenderTargetBitmap(size, size, 96, 96, PixelFormats.Pbgra32);
+            bitmap.Render(visual);
+            bitmap.Freeze();
+            return bitmap;
         }
 
         private enum SHGetFileInfoFlags : uint
