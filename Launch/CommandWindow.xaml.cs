@@ -89,6 +89,7 @@ namespace Launch
                 if (commands.Count > 0)
                 {
                     suggestList.SelectedIndex = (suggestList.SelectedIndex + 1) % commands.Count;
+                    suggestList.ScrollIntoView(commands[suggestList.SelectedIndex]);
                 }
                 return;
             }
@@ -97,6 +98,7 @@ namespace Launch
                 if (commands.Count > 0)
                 {
                     suggestList.SelectedIndex = (suggestList.SelectedIndex - 1 + commands.Count) % commands.Count;
+                    suggestList.ScrollIntoView(commands[suggestList.SelectedIndex]);
                 }
                 return;
             }
